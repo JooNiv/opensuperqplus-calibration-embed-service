@@ -1,0 +1,13 @@
+# Framing policy for the embed. Consumed by Netlify and Cloudflare Pages. On other
+# hosts translate these to the equivalent config (staticwebapp.config.json on
+# Azure, `add_header` on nginx/Caddy, a Route annotation on Rahti/OpenShift).
+#
+# X-Frame-Options is deliberately NOT set: any value of it would block framing,
+# and it has no allowlist. frame-ancestors is the modern replacement.
+#
+# `*` allows any host to frame this while the deploy target is being decided.
+# Tighten it to the real hosts before production, e.g.
+#   Content-Security-Policy: frame-ancestors 'self' https://opensuperqplus.eu
+/embed/*
+  Content-Security-Policy: frame-ancestors *
+  Cache-Control: public, max-age=300

@@ -1,0 +1,22 @@
+---
+import '../styles/global.css';
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title}</title>
+        {description && <meta name="description" content={description} />}
+        <!-- An embedded view should not be indexed separately from its host page. -->
+        <meta name="robots" content="noindex" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    </head>
+    <!-- No site header, nav or footer: this document is the iframe's whole contents. -->
+    <body>
+        <slot />
+    </body>
+</html>

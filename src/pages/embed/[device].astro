@@ -1,0 +1,25 @@
+---
+import Embed from '../../layouts/Embed.astro';
+import { CalibrationApp } from '../../components/calibration/CalibrationApp';
+import { DEVICE_CATALOG } from '../../lib/deviceCatalog';
+
+// One prerendered page per catalog entry, so each device has its own cacheable
+// embed URL. All calibration data is fetched in the browser.
+export function getStaticPaths() {
+    return Object.entries(DEVICE_CATALOG).map(([slug, device]) => ({
+        params: { device: slug },
+        props: { device },
+    }));
+}
+
+const { device } = Astro.props;
+---
+
+<Embed
+    title={`${device.name} calibration`}
+    description={`Live calibration metrics and qubit topology for ${device.name}.`}
+>
+    <!-- client:only because the tree needs a real DOM: clipboard, blob downloads
+         and react-zoom-pan-pinch all touch window/document on mount. -->
+    <CalibrationApp device={device} client:only="react" />
+</Embed>

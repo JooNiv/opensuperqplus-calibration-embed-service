@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* Design tokens for the opensuperqplus.eu look. Tailwind 4 turns each of these
+   into a utility (bg-brand, text-ink, border-line-2, font-mono, …), so there is
+   no tailwind.config file. */
+@theme {
+    --color-brand: #00b3c1;
+    --color-brand-dark: #00848e;
+    --color-brand-darker: #005a61;
+
+    --color-ink: #0a0a0a;
+    --color-bg: #ffffff;
+    --color-bg-alt: #fefefe;
+
+    --color-line-1: #e6e6e6;
+    --color-line-2: #cacaca;
+    --color-line-3: #a5a5a5;
+    --color-line-4: #8a8a8a;
+
+    --color-alert: #cc4b37;
+    --color-success: #3adb76;
+    --color-warning: #ffae00;
+
+    --font-sans: 'Open Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: Consolas, 'Liberation Mono', Courier, monospace;
+}
+
+/* Open Sans is self-hosted rather than loaded from a CDN, so the embed makes no
+   third-party requests. public/fonts/ carries the latin subsets only; the
+   unicode-range below matches that subset, so a glyph outside it falls through to
+   the rest of the --font-sans stack instead of downloading anything. */
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/open-sans-400.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+        U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/open-sans-700.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+        U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+/* The embed is its own document inside an iframe: no page margins, and the host's
+   CSS cannot reach in, so nothing here needs to defend against it. */
+html,
+body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+}
+
+/* Threshold slider. The track is a metric gradient painted on the wrapper, so the
+   input itself is transparent and only the thumb is styled. */
+.slider {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+}
+
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 24px;
+    background: #333;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.3);
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #333;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.3);
+}
+
+/* Spinner (replaces CSC UI's CSpinner). */
+.spinner {
+    display: inline-block;
+    border-style: solid;
+    border-color: var(--color-line-2);
+    border-top-color: var(--color-brand);
+    border-radius: 50%;
+    animation: spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes spinner-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner {
+        animation-duration: 2s;
+    }
+}

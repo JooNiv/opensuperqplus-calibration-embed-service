@@ -9,9 +9,22 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:tuna17": "node scripts/check-tuna17-adapter.mjs"
   },
   "dependencies": {
-    "astro": "^7.2.2"
+    "@astrojs/react": "^6.0.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "astro": "^7.2.2",
+    "framer-motion": "^12.43.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-zoom-pan-pinch": "^4.0.4",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@fontsource/open-sans": "^5.3.0"
   }
 }

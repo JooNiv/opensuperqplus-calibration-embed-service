@@ -1,17 +1,45 @@
 ---
+import '../styles/global.css';
+import { DEVICE_CATALOG } from '../lib/deviceCatalog';
 
+// Development landing page. Not part of the embed itself — it lists the available
+// embed URLs and shows the snippet a host page uses.
+const devices = Object.entries(DEVICE_CATALOG);
+const snippet = `<iframe src="https://EMBED_HOST/embed/${devices[0][0]}"
+        title="${devices[0][1].name} calibration"
+        width="100%" height="900" style="border:0" loading="lazy"></iframe>`;
 ---
 
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>QC calibration embeds</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    </head>
+    <body class="mx-auto max-w-3xl p-8">
+        <h1 class="text-2xl font-bold">QC calibration embeds</h1>
+        <p class="mt-2 text-[15px]">
+            Each device has a standalone page designed to be framed by a host site.
+        </p>
+
+        <ul class="mt-6 flex flex-col gap-2">
+            {devices.map(([slug, device]) => (
+                <li>
+                    <a class="font-semibold text-brand-darker underline" href={`/embed/${slug}`}>
+                        {device.name}
+                    </a>
+                    <span class="text-ink/60"> — /embed/{slug}</span>
+                </li>
+            ))}
+        </ul>
+
+        <h2 class="mt-8 text-lg font-bold">Embedding</h2>
+        <pre class="mt-2 overflow-x-auto rounded-sm border border-line-1 bg-bg-alt p-3 font-mono text-xs">{snippet}</pre>
+        <p class="mt-2 text-[14px] text-ink/70">
+            The page also posts <code class="font-mono">{'{ type: "calib-embed:height", height }'}</code>
+            to its parent on load and on every resize, so a host can size the iframe to its content.
+        </p>
+    </body>
 </html>
