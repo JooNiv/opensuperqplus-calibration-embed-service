@@ -9,8 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "check:tuna17": "node scripts/check-tuna17-adapter.mjs"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.2",
