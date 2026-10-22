@@ -78,19 +78,23 @@ const q50Edges = [
     ['QB2', 'QB1'],
 ];
 
+// --- Tuna-9 (Delft, 9-qubit diamond) -----------------------------------------
+const tuna9Spacing = 100;
+const t9 = grid(0, 0, tuna9Spacing);
+const tuna9Nodes = [
+    t9('QB0', 0, 0),
+    t9('QB1', -1, 1), t9('QB2', 1, 1),
+    t9('QB3', -2, 2), t9('QB4', 0, 2), t9('QB5', 2, 2),
+    t9('QB6', -1, 3), t9('QB7', 1, 3),
+    t9('QB8', 0, 4),
+];
+const tuna9Edges = [
+    ['QB0', 'QB1'], ['QB0', 'QB2'], ['QB1', 'QB3'], ['QB1', 'QB4'], ['QB2', 'QB4'],
+    ['QB2', 'QB5'], ['QB3', 'QB6'], ['QB4', 'QB6'], ['QB4', 'QB7'], ['QB5', 'QB7'],
+    ['QB6', 'QB8'], ['QB7', 'QB8'],
+];
+
 // --- Tuna-17 (Delft, 17-qubit "ninja star") ----------------------------------
-// Derived from the device's own topology (48 directed index pairs = 24 couplers):
-// the coupling graph embeds exactly on the diagonal grid, which is what gives the
-// ninja-star silhouette. Tuna-17 qubits keep their own numbering, so QB<n> is
-// source qubit q<n> (see src/lib/sources/tuna17.js).
-//
-//             QB6
-//         QB3     QB9     QB15
-//             QB5     QB12    QB16
-//         QB2     QB8     QB14
-//     QB0     QB4     QB11
-//         QB1     QB7     QB13
-//                     QB10
 const tuna17Spacing = 100;
 const t17 = grid(0, 0, tuna17Spacing);
 const tuna17Nodes = [
@@ -112,5 +116,6 @@ const tuna17Edges = [
 
 export const QC_LAYOUTS = {
     q50: { spacing: q50Spacing, nodes: q50Nodes, edges: q50Edges },
+    tuna9: { spacing: tuna9Spacing, nodes: tuna9Nodes, edges: tuna9Edges },
     tuna17: { spacing: tuna17Spacing, nodes: tuna17Nodes, edges: tuna17Edges },
 };
