@@ -14,6 +14,41 @@
 // alongside its legacy name. Use { title, keys } instead of a bare list where the
 // device needs its own row title.
 
+// Delft Tuna devices (Quantum Inspire metrics API). Keys are the ones that API
+// publishes; the labels are shared with Q50 wherever the two measure the same
+// quantity. Options a device does not report are hidden by the sidebar.
+//
+// Bell state fidelity is deliberately NOT labelled "CZ Gate Fidelity": it is a
+// prepared-state fidelity, not an interleaved-RB gate fidelity, so sharing the
+// label would misreport what was measured. It is still a coupler metric and is
+// rendered on the couplers exactly like Q50's CZ fidelity.
+const QUANTUM_INSPIRE_METRICS = {
+    overview: {
+        single: {
+            singleGateFidelity: ['average_single_qubit_gate_fidelity'],
+            readoutFidelity: ['readout_assignment_fidelity'],
+            t1: ['t1'],
+            t2: ['t2_ramsey'],
+        },
+        coupler: {
+            twoQubitFidelity: { title: 'Median Bell state fidelity', keys: ['bell_state_fidelity'] },
+            cliffordFidelity: [],
+        },
+    },
+    qubitOptions: [
+        { name: 'T1 Time', value: 't1' },
+        { name: 'T2 Time', value: 't2_ramsey', title: 'Measured by a Ramsey experiment' },
+        { name: 'T2 Echo Time', value: 't2_echo' },
+        { name: 'Single-Qubit Gate Fidelity', value: 'average_single_qubit_gate_fidelity', title: 'Averaged over the single-qubit gate set' },
+        { name: 'Readout Fidelity', value: 'readout_assignment_fidelity', title: 'Readout assignment fidelity' },
+        { name: 'QNDness Fidelity', value: 'readout_qnd_fidelity', title: 'QND = Quantum Non-Demolition' },
+        { name: 'Initialization Fidelity', value: 'initialization_fidelity' },
+    ],
+    couplerOptions: [
+        { name: 'Bell State Fidelity', value: 'bell_state_fidelity', title: 'Fidelity of a Bell state prepared on the coupled pair' },
+    ],
+};
+
 export const DEVICE_METRICS = {
     default: {
         overview: {
@@ -87,39 +122,8 @@ export const DEVICE_METRICS = {
         ],
     },
 
-    // Delft Tuna-17. Keys are the ones the Tuna-17 backend publishes; the labels
-    // are shared with Q50 wherever the two measure the same quantity.
-    //
-    // Bell state fidelity is deliberately NOT labelled "CZ Gate Fidelity": it is a
-    // prepared-state fidelity, not an interleaved-RB gate fidelity, so sharing the
-    // label would misreport what was measured. It is still a coupler metric and is
-    // rendered on the couplers exactly like Q50's CZ fidelity.
-    TUNA17: {
-        overview: {
-            single: {
-                singleGateFidelity: ['average_single_qubit_gate_fidelity'],
-                readoutFidelity: ['readout_assignment_fidelity'],
-                t1: ['t1'],
-                t2: ['t2_ramsey'],
-            },
-            coupler: {
-                twoQubitFidelity: { title: 'Median Bell state fidelity', keys: ['bell_state_fidelity'] },
-                cliffordFidelity: [],
-            },
-        },
-        qubitOptions: [
-            { name: 'T1 Time', value: 't1' },
-            { name: 'T2 Time', value: 't2_ramsey', title: 'Measured by a Ramsey experiment' },
-            { name: 'T2 Echo Time', value: 't2_echo' },
-            { name: 'Single-Qubit Gate Fidelity', value: 'average_single_qubit_gate_fidelity', title: 'Averaged over the single-qubit gate set' },
-            { name: 'Readout Fidelity', value: 'readout_assignment_fidelity', title: 'Readout assignment fidelity' },
-            { name: 'QNDness Fidelity', value: 'readout_qnd_fidelity', title: 'QND = Quantum Non-Demolition' },
-            { name: 'Initialization Fidelity', value: 'initialization_fidelity' },
-        ],
-        couplerOptions: [
-            { name: 'Bell State Fidelity', value: 'bell_state_fidelity', title: 'Fidelity of a Bell state prepared on the coupled pair' },
-        ],
-    },
+    TUNA9: QUANTUM_INSPIRE_METRICS,
+    TUNA17: QUANTUM_INSPIRE_METRICS,
 };
 
 export const getDeviceMetricsConfig = (deviceKey = '') => {
