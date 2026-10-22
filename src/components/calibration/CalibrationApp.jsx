@@ -132,12 +132,13 @@ export const CalibrationApp = ({ device }) => {
                     </TabPanel>
 
                     <TabPanel value='layout' className='pt-4'>
-                        <div className='flex w-full items-center justify-center'>
+                        <div className='flex w-full flex-col items-center justify-center gap-4'>
                             {calibrationLoading ? (
-                                <LoadingBlock label='Loading calibration data…' />
-                            ) : calibrationError ? (
-                                <ErrorBlock label='Calibration data is currently unavailable.' />
-                            ) : layout ? (
+                                <p className='text-[14px]'>Loading calibration data…</p>
+                            ) : calibrationError && (
+                                <ErrorBlock label='Calibration data is currently unavailable. Showing the qubit layout only.' />
+                            )}
+                            {layout ? (
                                 <QcLayout
                                     layout={layout}
                                     metrics={{
