@@ -14,7 +14,8 @@ and a source-adapter layer added so devices on different backends share one UI.
 | Route | Device | Data source |
 |---|---|---|
 | `/embed/q50` | VTT Q50 | FiQCI backend, live (`PUBLIC_FIQCI_API`) |
-| `/embed/tuna17` | Delft Tuna-17 | placeholder snapshot in `public/data/tuna17/` (`PUBLIC_TUNA17_BASE`) |
+| `/embed/tuna9` | Delft Tuna-9 | Quantum Inspire, live (`PUBLIC_QI_API`, `PUBLIC_QI_METRICS_API`) |
+| `/embed/tuna17` | Delft Tuna-17 | Quantum Inspire, live (`PUBLIC_QI_API`, `PUBLIC_QI_METRICS_API`) |
 
 `?tab=overview\|layout\|raw` opens the embed on a specific tab.
 
@@ -28,7 +29,6 @@ Adding a device means one entry in `src/lib/deviceCatalog.js`, one in `QC_LAYOUT
 npm install
 npm run dev              
 npm run build && npm run preview
-npm run check:tuna17     # verifies the Tuna-17 adapter and layout against the data
 ```
 
 Copy `.env.example` to `.env` to point the app at different backends.
@@ -49,23 +49,20 @@ come from the data (`'s'` renders as µs, `''` as a percentage) and a metric is
 treated as lower-is-better when its key contains `error`.
 
 The FiQCI backend already emits this shape, so `sources/fiqci.js` only unwraps the
-response envelope. `sources/tuna17.js` does real work: it relabels `q0…q16` as
-`QB0…QB16` (Tuna-17's qubit numbers are kept as published, not renumbered from 1
-like Q50's), flattens nested two-qubit metrics to `QBa__QBb`, assigns units,
-synthesises the `statistics` block Tuna-17 does not publish, and recovers the
-calibration timestamp from the record's ObjectId.
+response envelope. `sources/quantuminspire.js` does real work. Device info comes
+from Quantum Inspire's public `/backend_types/` list (the per-id endpoint needs
+auth), matched on the catalog's `backend_type_id`. Calibration comes from the
+Backend Metrics API's `/metrics/{backend_type_id}/latest`, whose one-time-series-
+per-qubit-or-pair shape the adapter flattens: it takes each series' newest point,
+relabels `q0…q16` as `QB0…QB16` (Tuna qubit numbers are kept as published, not
+renumbered from 1 like Q50's), turns two-qubit series into `QBa__QBb`, assigns
+units, synthesises the `statistics` block QI does not publish, and uses the
+newest point's timestamp as the calibration time.
 
 Metric keys stay exactly as each backend publishes them; `DEVICE_METRICS` supplies
 the shared display labels, so Q50's `t1_time` and Tuna-17's `t1` both read as
 "T1 Time". Q50's `cz_irb_crf_crf_fidelity` and Tuna-17's `bell_state_fidelity`
 deliberately keep separate labels — they are different measurements.
-
-## Switching Tuna-17 to the real Delft API
-
-Set `PUBLIC_TUNA17_BASE` to a base URL serving `static.json` and `calibration.json`
-in the same shapes as `public/data/tuna17/`. If the real API differs, `sources/tuna17.js`
-is the only file that changes; `npm run check:tuna17` verifies the result. The API
-must send permissive CORS headers, since the browser fetches it directly.
 
 ## Embedding
 
