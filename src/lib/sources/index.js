@@ -2,9 +2,9 @@
 // device on a new backend means adding one module here and one catalog entry —
 // no component changes.
 import * as fiqci from './fiqci.js';
-import * as tuna17 from './tuna17.js';
+import * as quantuminspire from './quantuminspire.js';
 
-const SOURCES = { fiqci, tuna17 };
+const SOURCES = { fiqci, quantuminspire };
 
 const sourceFor = (device) => {
     const source = SOURCES[device?.source];
